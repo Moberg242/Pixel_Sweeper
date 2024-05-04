@@ -1,3 +1,129 @@
-* {
-    background-color: aquamarine;
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap');
+
+body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1fr 1fr;
+    background-image: url("https://64.media.tumblr.com/tumblr_lnhv5u1MKs1qh5juxo1_1280.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    font-family: "Zen Maru Gothic", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+h1 {
+    top: 7%;
+    position: fixed;
+    color: rgb(47, 197, 247)
+}
+
+#verticalHints, #horizontalHints {
+    display: flex;
+    position: fixed;
+    align-content: center;
+    font-size: 22px;
+    font-weight: bolder;
+}
+
+#horizontalHints {
+    flex-direction: column;
+    align-items: flex-end;
+    right: 67%;
+    bottom: 20%;
+    height: 45vh;
+    justify-content: space-around;
+    word-spacing: 10px;
+}
+
+#verticalHints {
+    bottom: 67%;
+    left: 35%;
+    width: 45vw;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+#verticalHints>div {
+    width: 5px;
+}
+
+.square {
+    background-color: rgb(222, 222, 222);
+    border: 1px solid rgb(167, 167, 167);
+}
+
+#grid {
+    position: fixed;
+    width: 45vw;
+    height: 45vh;
+    display: flex;
+    flex-wrap: wrap;
+    bottom: 20%;
+    left: 35%;
+}
+
+#selector, #lives{
+    display: flex;
+    position: fixed;
+    width: 25%;
+    height: 60px;
+    border: 1px solid gray;
+    background-color: rgb(225, 225, 225);
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px;
+    bottom: 5%;
+}
+
+#selector {
+    left: 10%;
+}
+
+#lives {
+    right: 10%;
+}
+
+/* select, #startGame {
+    position: fixed;
+    width: 200px;
+    height: 40px;
+    margin: 20px;
+    text-align: center;
+    font-family: "Zen Maru Gothic", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: rgb(225, 225, 225);
+}
+
+#startGame {
+    position: fixed;
+    top: 30%;
+} */
+
+button {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 40px;
+    width: 90px;
+    font-family: "Zen Maru Gothic", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: rgb(225, 225, 225);
+}
+
+#fill, #blank {
+    width: 45px;
+    height: 45px;
+    border: 1px solid gray;
+    align-content: center;
+}
+
+#fill {
+    border: 3px solid green;
+    background-color: rgb(58, 58, 58);
+}
+
+#lifeOne, #lifeTwo, #lifeThree {
+    color: red;
 }
