@@ -1,18 +1,24 @@
 let gridSize;
 let playerChoice = true;
-//found by player clicking the fill or blank option
 let selectedSquare;
-//found by player clicking on the grid square they want to assign their choice to
-//equal to ninjaGrid[x]
 let selectedSquareId;
 const maxLives = 3;
 let livesLeft = maxLives;
 let currentGrid;
-//once an image is selected, reset currentGrid variable to the created gridImage
 let winningKeys;
-//the number of keys in the grid that are filled in
 let wonKeys = 0;
+
+let docSquare;
 let pageGrid = document.getElementById('grid');
+const startGame = document.getElementById('startGame');
+const fillButton = document.getElementById('fill');
+const blankButton = document.getElementById('blank');
+const win = document.getElementById('win');
+const lose = document.getElementById('lose');
+const nextLevelButton = document.getElementById('nextLevel');
+const tryAgainButton = document.getElementById('tryAgain');
+let hor = document.getElementById('horizontalHints');
+let vert = document.getElementById('verticalHints');
 
 
 const ninjaGrid = [];
@@ -55,10 +61,24 @@ const stairsHints = {
     row3: "4"
 };
 
-const rowValues = [
-    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-];
-
+const pidgeonGrid = [];
+const pidgeonSquares = [1, 2, 3, 7, 8, 10, 15, 16, 17, 19, 20, 23, 24, 25, 26, 27, 30, 31, 32, 33, 39, 45, 46];
+const pidgeonHints = {
+    column0: "1",
+    column1: "3",
+    column2: "1 3",
+    column3: "5 1",
+    column4: "4",
+    column5: "3",
+    column6: "2",
+    row0: "3",
+    row1: "2 1",
+    row2: "3 2",
+    row3: "5",
+    row4: "4",
+    row5: "1",
+    row6: "2"
+};
 
 function createGrid(gridArray) {
     for (let i = 0; i < (gridSize * gridSize); i++) {
@@ -78,81 +98,42 @@ function createGrid(gridArray) {
     }
 }
 
-
-function createGridImage(size, imageGrid, imageSquares, imageHints) {
+function createGridImage(size, imageSquares, imageHints) {
     gridSize = size;
-    createGrid(imageGrid);
+    createGrid(currentGrid);
     for (position of imageSquares) {
-        imageGrid[position].filled = true;
+        currentGrid[position].filled = true;
     }
     winningKeys = imageSquares.length;
-    for(let i = 0; i < gridSize; i++) {
+    for (let i = 0; i < gridSize; i++) {
         let newHint = document.createElement('div');
         let rowCol = "row" + i;
         newHint.innerHTML = imageHints[rowCol];
-        let hor = document.getElementById('horizontalHints');
         hor.append(newHint);
     }
-    for(let i = 0; i < gridSize; i++) {
+    for (let i = 0; i < gridSize; i++) {
         let newHint = document.createElement('div');
         let rowCol = "column" + i;
         newHint.innerHTML = imageHints[rowCol];
-        let vert = document.getElementById('verticalHints');
         vert.append(newHint);
     }
 }
 
-// createGridImage(10, ninjaGrid, ninjaSquares, ninjaHints);
+function levelOne() {
+    currentGrid = stairsGrid;
+    createGridImage(4, stairsSquares, stairsHints);
+}
 
-
-createGridImage(4, stairsGrid, stairsSquares, stairsHints);
-//create grid when start button
-// currentGrid = ninjaGrid;
-currentGrid = stairsGrid;
-//set when start button
-
-
-const fillButton = document.getElementById('fill');
-const blankButton = document.getElementById('blank');
-const docSquare = document.querySelectorAll('.square');
-const startGameButton = document.getElementById('startGame');
-const difficulty = document.getElementById('difficulty');
-
-// difficulty.addEventListener("click", function() {
-//     level = difficulty.value;
-// })
-
-// startGameButton.addEventListener("click", function() {
-//     level = difficulty.value;
-//     if(level === "Easy") {
-//         createGridImage(4, stairsGrid, stairsSquares);
-//     } else if(level === "Medium") {
-//         createGridImage(10, ninjaGrid, ninjaSquares);
-//     }
-//     startGameButton.remove();
-//     difficulty.remove();
-// })
-
-fillButton.addEventListener("click", function () {
-    playerChoice = true;
-    fillButton.style.border = "3px solid green";
-    blankButton.style.border = '1px solid gray';
-})
-blankButton.addEventListener("click", function () {
-    playerChoice = false;
-    blankButton.style.border = '3px solid green';
-    fillButton.style.border = '1px solid gray';
-})
-
-docSquare.forEach(function (e) {
-    let selection = e.getAttribute("id", [0]);
-    e.addEventListener("click", function (e) {
-        selectedSquare = currentGrid[selection];
-        selectedSquareId = selection;
-        fillSquare();
-    });
-})
-
+function levelTwo() {
+    resetGame();
+    if (currentGrid === stairsGrid) {
+        currentGrid = pidgeonGrid;
+        createGridImage(7, pidgeonSquares, pidgeonHints);
+    } else if(currentGrid === pidgeonGrid) {
+        currentGrid = ninjaGrid;
+        createGridImage(10, ninjaSquares, ninjaHints);
+    }
+}
 
 function fillSquare() {
     if (playerChoice === selectedSquare.filled) {
@@ -182,26 +163,84 @@ function fillSquare() {
     winOrLose();
 }
 
-
 function winOrLose() {
     if (livesLeft < 1) {
-        alert("you lost!");
+        lose.style.visibility = 'visible';
+        currentGrid = null;
+        stairsGrid = null;
     } else if (wonKeys === winningKeys) {
-        for(key of currentGrid) {
-            if(key.filled === false) {
+        for (key of currentGrid) {
+            if (key.filled === false) {
                 let selectedSquareId = key.space;
                 document.getElementById(selectedSquareId).style.backgroundColor = 'transparent';
             }
         }
-        console.log("you win!");
-    } 
+        win.style.visibility = 'visible';
+        if(currentGrid === ninjaGrid) {
+            win.innerHTML = "Congratulations! You beat all the levels!";
+        }
+    }
 }
 
 function resetGame() {
     document.getElementById('lifeOne').style.visibility = 'visible';
     document.getElementById('lifeTwo').style.visibility = 'visible';
     document.getElementById('lifeThree').style.visibility = 'visible';
+    livesLeft = maxLives;
+    wonKeys = 0;
+    docSquare.forEach(function (e) {
+        e.remove();
+    })
+    hor.textContent = '';
+    vert.textContent = '';
 }
+
+startGame.addEventListener("click", function () {
+    startGame.style.visibility = 'hidden';
+    levelOne();
+    docSquare = document.querySelectorAll('.square');
+    docSquare.forEach(function (e) {
+        let selection = e.getAttribute("id", [0]);
+        e.addEventListener("click", () => {
+            selectedSquare = currentGrid[selection];
+            selectedSquareId = selection;
+            fillSquare();
+        });
+    })
+})
+
+nextLevelButton.addEventListener("click", function () {
+    win.style.visibility = 'hidden';
+    levelTwo();
+    docSquare = document.querySelectorAll('.square');
+    docSquare.forEach(function (e) {
+        let selection = e.getAttribute("id", [0]);
+        e.addEventListener("click", () => {
+            selectedSquare = currentGrid[selection];
+            selectedSquareId = selection;
+            fillSquare();
+        });
+    })
+})
+
+tryAgainButton.addEventListener("click", function() {
+    resetGame();
+    startGame.style.visibility = 'visible';
+    lose.style.visibility = 'hidden';
+})
+
+fillButton.addEventListener("click", function () {
+    playerChoice = true;
+    fillButton.style.border = "3px solid green";
+    blankButton.style.border = '1px solid gray';
+})
+
+blankButton.addEventListener("click", function () {
+    playerChoice = false;
+    blankButton.style.border = '3px solid green';
+    fillButton.style.border = '1px solid gray';
+})
+
 
 //SANDBOX
 //select difficulty - will create different boards

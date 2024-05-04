@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js" defer></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous" defer></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous" defer></script>
     <title>Pixel Sweeper Game</title>
 </head>
+
 <body>
     <h1>Pixel Sweeper</h1>
-    <!-- <select name="difficulty" id="difficulty">
-        <option value="" disabled selected>Choose your difficulty</option>
-        <option value="Easy">Easy</option>
-        <option value="Medium">Medium</option>
-        <option value="Hard">Hard</option>
-    </select>
-    <button id="startGame">StartGame</button> -->
+    <button id="startGame">Start Game</button>
     <div id="verticalHints"></div>
     <div id="horizontalHints"></div>
     <div id="grid"></div>
+    <div id="win">
+        <div>You Win!</div>
+        <button id="nextLevel">Next Level</button>
+    </div>
+    <div id="lose">
+        <div>You Lost!</div>
+        <button id="tryAgain">Play Again</button>
+    </div>
     <div id="selector">
         <button id="fill"></button>
         <button id="blank"></button>
     </div>
     <div id="lives">
-        Lives left: <div id="lifeOne">&hearts;</div> <div id="lifeTwo">&hearts;</div> <div id="lifeThree">&hearts;</div>
+        Lives left: <div id="lifeOne">&hearts;</div>
+        <div id="lifeTwo">&hearts;</div>
+        <div id="lifeThree">&hearts;</div>
     </div>
 </body>
+
 </html>
