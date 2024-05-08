@@ -3,6 +3,7 @@
 * {
     font-family: "Zen Maru Gothic", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
 body {
     display: flex;
     flex-direction: column;
@@ -17,12 +18,13 @@ body {
 }
 
 h1 {
-    top: 7%;
+    top: 2%;
     position: fixed;
     color: rgb(47, 197, 247)
 }
 
-#verticalHints, #horizontalHints {
+#verticalHints,
+#horizontalHints {
     display: flex;
     position: fixed;
     align-content: center;
@@ -33,7 +35,7 @@ h1 {
 #horizontalHints {
     flex-direction: column;
     align-items: flex-end;
-    right: 67%;
+    right: 70%;
     bottom: 20%;
     height: 45vh;
     justify-content: space-around;
@@ -42,7 +44,7 @@ h1 {
 
 #verticalHints {
     bottom: 67%;
-    left: 35%;
+    left: 32%;
     width: 45vw;
     flex-direction: row;
     justify-content: space-around;
@@ -56,6 +58,7 @@ h1 {
 .square {
     background-color: rgb(222, 222, 222);
     border: 1px solid rgb(167, 167, 167);
+    animation: fadeSquare 500ms;
 }
 
 #grid {
@@ -65,10 +68,11 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     bottom: 20%;
-    left: 35%;
+    left: 32%;
 }
 
-#selector, #lives {
+#selector,
+#lives {
     display: flex;
     position: fixed;
     width: 25%;
@@ -79,6 +83,7 @@ h1 {
     align-items: center;
     margin: 10px;
     bottom: 5%;
+    border-radius: 15px;
 }
 
 #selector {
@@ -92,18 +97,21 @@ h1 {
 #startGame {
     position: fixed;
     top: 30%;
+    font-size: 20px;
+    border: 3px solid rgb(8, 168, 8);
 }
 
 button {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 40px;
-    width: 90px;
+    width: 200px;
+    height: 50px;
     background-color: rgb(225, 225, 225);
 }
 
-#fill, #blank {
+#fill,
+#blank {
     width: 45px;
     height: 45px;
     border: 1px solid gray;
@@ -115,18 +123,35 @@ button {
     background-color: rgb(58, 58, 58);
 }
 
-#lifeOne, #lifeTwo, #lifeThree {
+#lives>div {
     color: red;
 }
 
-#win, #lose {
+#win,
+#lose {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: absolute;
-    top: 15%;
-    align-content: center;
-    text-align: center;
-    padding: 10px;
+    top: 16%;
+    min-width: 200px;
+    max-height: 100px;
+    padding: 5px;
     background-color: rgb(108, 187, 255);
     border: 3px solid rgb(8, 168, 8);
-    border-radius: 10px;
+    border-radius: 15px;
     visibility: hidden;
+}
+
+#win {
+    visibility: visible;
+}
+
+#nextLevel, #tryAgain {
+    border-radius: 15px;
+}
+
+@keyframes fadeSquare {
+    0% {opacity: 0%;}
+    100% {opacity: 100%;}
 }
