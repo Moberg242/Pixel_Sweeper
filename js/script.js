@@ -4,7 +4,7 @@ let selectedSquareId;
 const maxLives = 3;
 let livesLeft = 0;
 let currentGrid = '';
-const gridNames = ["Demo", "Stairs", "Pidgeon", "Ninja"]
+const gridNames = ["Demo", "Stairs", "Pidgeon", "Ninja", "Ghibli"]
 let gridName = '';
 let index = '';
 let winningKeys;
@@ -22,12 +22,13 @@ let hor = document.getElementById('horizontalHints');
 let vert = document.getElementById('verticalHints');
 const winText = document.getElementById('text');
 const lives = document.getElementById('lives');
+const backgrounds = document.querySelectorAll('.backgrounds');
 
 
 
-const demoGrid = [];
-const demoSquares = [0, 2, 4, 6, 7, 8];
-// const demoSquares = [0];
+let demoGrid = [];
+// const demoSquares = [0, 2, 4, 6, 7, 8];
+const demoSquares = [0];
 const demoHints = {
     column0: "1 1",
     column1: "2",
@@ -37,9 +38,9 @@ const demoHints = {
     row2: "3"
 };
 
-const stairsGrid = [];
-const stairsSquares = [3, 6, 7, 9, 10, 11, 12, 13, 14, 15];
-// const stairsSquares = [0];
+let stairsGrid = [];
+// const stairsSquares = [3, 6, 7, 9, 10, 11, 12, 13, 14, 15];
+const stairsSquares = [0];
 const stairsHints = {
     column0: "1",
     column1: "2",
@@ -51,9 +52,9 @@ const stairsHints = {
     row3: "4"
 };
 
-const pidgeonGrid = [];
-const pidgeonSquares = [1, 2, 3, 7, 8, 10, 15, 16, 17, 19, 20, 23, 24, 25, 26, 27, 30, 31, 32, 33, 39, 45, 46];
-// const pidgeonSquares = [0];
+let pidgeonGrid = [];
+// const pidgeonSquares = [1, 2, 3, 7, 8, 10, 15, 16, 17, 19, 20, 23, 24, 25, 26, 27, 30, 31, 32, 33, 39, 45, 46];
+const pidgeonSquares = [0];
 const pidgeonHints = {
     column0: "1",
     column1: "3",
@@ -71,11 +72,11 @@ const pidgeonHints = {
     row6: "2"
 };
 
-const ninjaGrid = [];
-const ninjaSquares = [
-    3, 4, 5, 6, 8, 12, 17, 19, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 32, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 59, 60, 69, 71, 74, 75, 78, 82, 87, 93, 94, 95, 96
-];
-// const ninjaSquares = [0];
+let ninjaGrid = [];
+// const ninjaSquares = [
+    // 3, 4, 5, 6, 8, 12, 17, 19, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 32, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 59, 60, 69, 71, 74, 75, 78, 82, 87, 93, 94, 95, 96
+// ];
+const ninjaSquares = [0];
 const ninjaHints = {
     column0: "4",
     column1: "3 1",
@@ -99,6 +100,99 @@ const ninjaHints = {
     row9: "4"
 };
 
+let ghibliGrid = [];
+const ghibliSquares = [
+    6, 8, 17, 20, 21, 22, 23, 24, 27, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 44, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 76, 77, 78, 81, 82, 83, 86, 87, 88, 90, 91, 92, 95, 97, 99, 102, 103, 104, 106, 107, 110, 112, 114, 117, 118, 121, 122, 123, 126, 127, 128, 131, 132, 133, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 180, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 198, 200, 201, 202, 203, 204, 207, 215, 218, 219
+];
+const ghibliHints = {
+    column0: "1 1 1 1",
+    column1: "9",
+    column2: "12",
+    column3: "4 6",
+    column4: "3 4",
+    column5: "4 2 6",
+    column6: "6 6",
+    column7: "13",
+    column8: "6 7",
+    column9: "4 2 6",
+    column10: "3 4",
+    column11: "4 5",
+    column12: "13",
+    column13: "9",
+    column14: "1 1 1 1",
+    row0: "1 1",
+    row1: "1 5 1",
+    row2: "11 1",
+    row3: "13",
+    row4: "15",
+    row5: "3 3 3",
+    row6: "3 1 1 1 3",
+    row7: "2 1 1 1 2",
+    row8: "3 3 3",
+    row9: "15",
+    row10: "13",
+    row11: "13",
+    row12: "1 11",
+    row13: "1 5 1",
+    row14: "1 2",
+};
+
+
+
+// class Grid {
+//     constructor(name, size, squares, hints) {
+//         this.array = [],
+//         this.name = name,
+//         this.size = size,
+//         this.squares = squares,
+//         this.hints = hints
+//     }
+//     createGrid2() {
+//         for(let i = 0; i < (this.size * this.size); i++) {
+//             let object = {
+//                 space: i,
+//                 filled: false,
+//                 isFilled: false
+//             }
+//             this.array.push(object);
+//             let id = object.space;
+//             let newSquare = document.createElement('button');
+//             newSquare.setAttribute("id", id);
+//             newSquare.setAttribute("class", "square");
+//             pageGrid.append(newSquare);
+//             document.getElementById(id).style.width = (99 / this.size) + "%";
+//             document.getElementById(id).style.height = (99 / this.size) + "%";
+//         }
+//     }
+//     createGridImage2() {
+//         winningKeys = this.squares.length;
+//         createGrid();
+//         for(position of this.squares) {
+//             this.array[position].filled = true;
+//         }
+//         for(let i = 0; i < this.size; i++) {
+//             let newHint = document.createElement('div');
+//             let row = "row" + i;
+//             newHint.innerHTML = this.hints[row];
+//             hor.append(newHint);
+//             hor.style.visibility = 'visible';
+//         }
+//         for(let i = 0; i < this.size; i++) {
+//             let newHint = document.createElement('div');
+//             let column = "column" + i;
+//             newHint.innerHTML = this.hints[column];
+//             vert.append(newHint);
+//             vert.style.visibility = 'visible';
+//         }
+//     }
+// }
+
+// const test = new Grid("test", 4, demoSquares, demoHints);
+// console.log(test);
+// test.createGrid2();
+// test.createGridImage2();
+
+
 function createGrid(gridArray) {
     for (let i = 0; i < (gridSize * gridSize); i++) {
         let object = {
@@ -114,6 +208,7 @@ function createGrid(gridArray) {
         pageGrid.append(newSquare);
         document.getElementById(id).style.width = (99 / gridSize) + "%";
         document.getElementById(id).style.height = (99 / gridSize) + "%";
+        // document.getElementById(id).style.animation = "fadeSquare " + ((i + 5) * 50) + "ms";
     }
 }
 
@@ -141,24 +236,31 @@ function createGridImage(size, imageSquares, imageHints) {
 }
 
 function nextLevel() {
-    resetGame();
     if (gridName === '') {
         currentGrid = demoGrid;
+        demoGrid = [];
         index = 0;
         createGridImage(3, demoSquares, demoHints);
     }
     else if (gridName === gridNames[0]) {
         currentGrid = stairsGrid;
+        stairsGrid = [];
         index = 1;
         createGridImage(4, stairsSquares, stairsHints);
     } else if (gridName === gridNames[1]) {
         currentGrid = pidgeonGrid;
+        pidgeonGrid = [];
         index = 2;
         createGridImage(7, pidgeonSquares, pidgeonHints);
     } else if (gridName === gridNames[2]) {
         currentGrid = ninjaGrid;
+        ninjaGrid = [];
         index = 3;
         createGridImage(10, ninjaSquares, ninjaHints);
+    } else if(gridName === gridNames[4]) {
+        currentGrid = ghibliGrid;
+        bonusGrid = [];
+        createGridImage(15, ghibliSquares, ghibliHints);
     }
     gridName = gridNames[index];
     docSquare = document.querySelectorAll('.square');
@@ -181,7 +283,7 @@ function fillSquare() {
             selectedSquare.isFilled = true;
             document.getElementById(selectedSquareId).style.backgroundColor = 'rgb(58, 58, 58)';
         } else if (playerChoice === false) {
-            document.getElementById(selectedSquareId).style.backgroundColor = 'transparent';
+            document.getElementById(selectedSquareId).innerText = "X";
         }
     } else {
         document.getElementById(selectedSquareId).style.backgroundColor = 'rgb(254, 156, 156)';
@@ -198,29 +300,33 @@ function winOrLose() {
         } else {
             gridName = (gridNames[index - 1]);
         }
+        win.style.visibility = 'visible';
         winText.innerHTML = `You Lost!`;
         nextLevelButton.innerHTML = "Try Again";
-        win.style.visibility = 'visible';
         resetGame();
     } else if (wonKeys === winningKeys) {
         for (key of currentGrid) {
-            if (key.filled === false) {
-                let selectedSquareId = key.space;
-                document.getElementById(selectedSquareId).style.backgroundColor = 'transparent';
-                document.getElementById(selectedSquareId).style.border = 'none';
-                hor.innerHTML = '';
-                vert.innerHTML = '';
+            let id = key.space;
+            if(key.filled === true) {
+            } else if (key.filled === false) {
+                document.getElementById(id).style.backgroundColor = 'transparent';
+                document.getElementById(id).style.border = 'none';
+                document.getElementById(id).innerText = '';
             }
         }
+        hor.innerHTML = '';
+        vert.innerHTML = '';
         win.style.visibility = 'visible';
         winText.innerHTML = `You completed the ${gridName} level!`;
-        if (currentGrid === ninjaGrid) {
+        if (gridName === "Ninja") {
             win.innerHTML = `You completed the ${gridName} level! Congratulations you beat all the levels!`;
+            nextLevelButton.remove();
         }
     }
 }
 
 function resetGame() {
+    console.log("reset");
     if (livesLeft < maxLives) {
         for (i = 0; i < (maxLives - livesLeft); i++) {
             let newLife = document.createElement('div');
@@ -230,15 +336,16 @@ function resetGame() {
         livesLeft = maxLives;
     }
     wonKeys = 0;
+    currentGrid = '';
     pageGrid.innerHTML = '';
     hor.innerHTML = '';
     vert.innerHTML = '';
-    console.log('reset');
 }
 
 nextLevelButton.addEventListener("click", function () {
     nextLevelButton.innerHTML = "Next Level";
     win.style.visibility = 'hidden';
+    resetGame();
     nextLevel();
 })
 
@@ -254,6 +361,12 @@ blankButton.addEventListener("click", function () {
     fillButton.style.border = '1px solid gray';
 })
 
+backgrounds.forEach(function (e) {
+    e.addEventListener("click", function () {
+        let source = e.getAttribute("src");
+        document.querySelector("body").style.backgroundImage = `url("${source}")`;
+    })
+})
 
 //SANDBOX
 //select difficulty - will create different boards
@@ -261,3 +374,4 @@ blankButton.addEventListener("click", function () {
 //html add for winning game
 //html add for losing game
 //reset game function
+
