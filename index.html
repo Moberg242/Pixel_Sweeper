@@ -10,23 +10,36 @@
 </head>
 
 <body>
-    <h1>Pixel Sweeper</h1>
+    <h1>Pixel Sweeper
+        <div id="title"></div>
+    </h1>
     <details id="backgrounds">
         <summary>Change Background</summary>
-        <img src="https://64.media.tumblr.com/tumblr_lnhv5u1MKs1qh5juxo1_1280.jpg" alt="Howl's Garden" id="bg1" class="backgrounds">
-        <img src="https://cdn.vox-cdn.com/thumbor/Tv2pz8SEMblW-FtCgTT9I2K8g_8=/1400x788/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/19935599/totoro1.jpg" alt="Totoro's tunnel" id="bg2" class="backgrounds">
-        <img src="https://assets.userstyles.org/assets_packs/type=style/user_id=1699786/screenshot_991ed58d-9833-49a7-95c9-649fb9d04a6e.webp" alt="Howl and Sophia" id="bg3" class="backgrounds">
-        <img src="https://wallpapergod.com/images/hd/ghibli-1920X1080-wallpaper-1fps9qabn0eawbpl.jpeg" alt="Mononke's Forest" id="bg4" class="backgrounds">
-        <img src="https://rare-gallery.com/uploads/posts/501840-landscape-nausicaa.jpg" alt="Nausicaa's Field" id="bg5" class="backgrounds">
+        <img src="https://64.media.tumblr.com/tumblr_lnhv5u1MKs1qh5juxo1_1280.jpg" alt="Howl's Garden" id="bg1"
+            class="backgrounds">
+        <img src="https://cdn.vox-cdn.com/thumbor/Tv2pz8SEMblW-FtCgTT9I2K8g_8=/1400x788/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/19935599/totoro1.jpg"
+            alt="Totoro's tunnel" id="bg2" class="backgrounds">
+        <img src="https://assets.userstyles.org/assets_packs/type=style/user_id=1699786/screenshot_991ed58d-9833-49a7-95c9-649fb9d04a6e.webp"
+            alt="Howl and Sophia" id="bg3" class="backgrounds">
+        <img src="https://wallpapergod.com/images/hd/ghibli-1920X1080-wallpaper-1fps9qabn0eawbpl.jpeg"
+            alt="Mononke's Forest" id="bg4" class="backgrounds">
+        <img src="https://rare-gallery.com/uploads/posts/501840-landscape-nausicaa.jpg" alt="Nausicaa's Field" id="bg5"
+            class="backgrounds">
     </details>
+    <aside>
+        <h2>Tutorial</h2>
+        <p>Welcome to the tutorial! This is a game of filling in squares to create a picture. Start by looking at the hints provided on the left and top of the grid.</p>
+        <button id="tutorial">Next</button>
+        <button id="demoButton">Skip Tutorial</button>
+    </aside>
     <div id="verticalHints"></div>
     <div id="horizontalHints"></div>
     <div id="grid"></div>
     <div id="win">
         <h3 id="text"></h3>
-        <button id="nextLevel">Start Demo</button>
-        <!-- <button id="">Skip Demo</button> -->
+        <button id="nextLevel">Start Game</button>
     </div>
+    <div id="arrow">&rarr;</div>
     <div id="selector">
         <button id="fill"></button>
         <button id="blank"></button>

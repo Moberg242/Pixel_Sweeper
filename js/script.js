@@ -6,18 +6,17 @@ let livesLeft = 0;
 let currentGrid = '';
 const gridNames = ["Demo", "Stairs", "Pidgeon", "Ninja", "Ghibli"]
 let gridName = '';
-let index = '';
+let index = -1;
 let winningKeys;
 let wonKeys = 0;
+let demoStep = 0;
 let playerChoice = true;
+// let mouseClicked = true;
 
 
 let docSquare;
 let pageGrid = document.getElementById('grid');
-const fillButton = document.getElementById('fill');
-const blankButton = document.getElementById('blank');
 const win = document.getElementById('win');
-const nextLevelButton = document.getElementById('nextLevel');
 let hor = document.getElementById('horizontalHints');
 let vert = document.getElementById('verticalHints');
 const winText = document.getElementById('text');
@@ -25,10 +24,55 @@ const lives = document.getElementById('lives');
 const backgrounds = document.querySelectorAll('.backgrounds');
 
 
+const fillButton = document.getElementById('fill');
+const blankButton = document.getElementById('blank');
+const nextLevelButton = document.getElementById('nextLevel');
+const skipDemoButton = document.getElementById('demoButton');
+const nextDemoButton = document.getElementById('tutorial');
+
+
+let tutorial = [
+    {
+        text: 'Each number represents the number of sequential squares in that row or column that need to be filled in - or blocks. A space between the numbers indicates at least one square between blocks that must be left blank.'
+    },
+    {
+        text: 'The easiest way to start is to find blocks that occupy the whole line. Lets start with rows.',
+    },
+    {
+        text: 'The top row has a total of two squares to be filled in, with at least one space between them. Since there are only three spaces, you can determine the first square will be filled, the second square will be blank, and the third square will be filled.',
+        arrowtop: '38%',
+        arrowleft: '22%'
+    },
+    {
+        text: 'Select your "fill" tool and color in the first and third squares.',
+        arrowtop: '85%',
+        arrowleft: '10%'
+    },
+    {
+        text: 'Notice the bottom row has a block of three squares to be filled in. Select your "fill" tool and fill in each square on the bottom row.',
+        arrowtop: '72%',
+        arrowleft: '22%'
+    },
+    {
+        text: 'Lets move on to columns. The first and third columns already meet the requirements with one square filled, one square blank, and one square empty.',
+        arrowtop: '25%',
+        arrowleft: '32%'
+    },
+    {
+        text: 'You can use your "blank" tool to fill in the middle square so you dont lose track.',
+        arrowtop: '85%',
+        arrowleft: '20%'
+    },
+    {
+        text: 'Notice the second column requires two squares to be filled. We already filled in one square! Choose your "fill" tool and color in the middle square to complete the block.',
+        arrowtop: '25%',
+        arrowleft: '48%'
+    },
+]
 
 let demoGrid = [];
-// const demoSquares = [0, 2, 4, 6, 7, 8];
-const demoSquares = [0];
+const demoSquares = [0, 2, 4, 6, 7, 8];
+// const demoSquares = [0];
 const demoHints = {
     column0: "1 1",
     column1: "2",
@@ -74,7 +118,7 @@ const pidgeonHints = {
 
 let ninjaGrid = [];
 // const ninjaSquares = [
-    // 3, 4, 5, 6, 8, 12, 17, 19, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 32, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 59, 60, 69, 71, 74, 75, 78, 82, 87, 93, 94, 95, 96
+// 3, 4, 5, 6, 8, 12, 17, 19, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 32, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 59, 60, 69, 71, 74, 75, 78, 82, 87, 93, 94, 95, 96
 // ];
 const ninjaSquares = [0];
 const ninjaHints = {
@@ -138,61 +182,6 @@ const ghibliHints = {
 };
 
 
-
-// class Grid {
-//     constructor(name, size, squares, hints) {
-//         this.array = [],
-//         this.name = name,
-//         this.size = size,
-//         this.squares = squares,
-//         this.hints = hints
-//     }
-//     createGrid2() {
-//         for(let i = 0; i < (this.size * this.size); i++) {
-//             let object = {
-//                 space: i,
-//                 filled: false,
-//                 isFilled: false
-//             }
-//             this.array.push(object);
-//             let id = object.space;
-//             let newSquare = document.createElement('button');
-//             newSquare.setAttribute("id", id);
-//             newSquare.setAttribute("class", "square");
-//             pageGrid.append(newSquare);
-//             document.getElementById(id).style.width = (99 / this.size) + "%";
-//             document.getElementById(id).style.height = (99 / this.size) + "%";
-//         }
-//     }
-//     createGridImage2() {
-//         winningKeys = this.squares.length;
-//         createGrid();
-//         for(position of this.squares) {
-//             this.array[position].filled = true;
-//         }
-//         for(let i = 0; i < this.size; i++) {
-//             let newHint = document.createElement('div');
-//             let row = "row" + i;
-//             newHint.innerHTML = this.hints[row];
-//             hor.append(newHint);
-//             hor.style.visibility = 'visible';
-//         }
-//         for(let i = 0; i < this.size; i++) {
-//             let newHint = document.createElement('div');
-//             let column = "column" + i;
-//             newHint.innerHTML = this.hints[column];
-//             vert.append(newHint);
-//             vert.style.visibility = 'visible';
-//         }
-//     }
-// }
-
-// const test = new Grid("test", 4, demoSquares, demoHints);
-// console.log(test);
-// test.createGrid2();
-// test.createGridImage2();
-
-
 function createGrid(gridArray) {
     for (let i = 0; i < (gridSize * gridSize); i++) {
         let object = {
@@ -214,6 +203,7 @@ function createGrid(gridArray) {
 
 function createGridImage(size, imageSquares, imageHints) {
     gridSize = size;
+    currentGrid = [];
     createGrid(currentGrid);
     for (position of imageSquares) {
         currentGrid[position].filled = true;
@@ -236,46 +226,51 @@ function createGridImage(size, imageSquares, imageHints) {
 }
 
 function nextLevel() {
+    const title = document.querySelector('#title');
+    title.innerHTML = `Level ${index + 1}`;
     if (gridName === '') {
+        title.innerHTML = "Tutorial";
         currentGrid = demoGrid;
-        demoGrid = [];
         index = 0;
         createGridImage(3, demoSquares, demoHints);
+        demoMode();
     }
     else if (gridName === gridNames[0]) {
+        document.querySelector('aside').remove();
+        document.querySelector('#arrow').remove();
         currentGrid = stairsGrid;
-        stairsGrid = [];
         index = 1;
         createGridImage(4, stairsSquares, stairsHints);
     } else if (gridName === gridNames[1]) {
         currentGrid = pidgeonGrid;
-        pidgeonGrid = [];
         index = 2;
         createGridImage(7, pidgeonSquares, pidgeonHints);
     } else if (gridName === gridNames[2]) {
         currentGrid = ninjaGrid;
-        ninjaGrid = [];
         index = 3;
         createGridImage(10, ninjaSquares, ninjaHints);
-    } else if(gridName === gridNames[4]) {
+    } else if (gridName === gridNames[4]) {
         currentGrid = ghibliGrid;
-        bonusGrid = [];
         createGridImage(15, ghibliSquares, ghibliHints);
     }
     gridName = gridNames[index];
     docSquare = document.querySelectorAll('.square');
     docSquare.forEach(function (e) {
         let selection = e.getAttribute("id", [0]);
-        e.addEventListener("click", () => {
-            selectedSquare = currentGrid[selection];
-            selectedSquareId = selection;
-            fillSquare();
-        });
+        e.addEventListener("click", function () {
+            // if(mouseClicked === true) {
+                selectedSquare = currentGrid[selection];
+                selectedSquareId = selection;
+                fillSquare();
+            // }
+        })
     })
 }
 
+
 function fillSquare() {
     if (playerChoice === selectedSquare.filled) {
+        document.getElementById(selectedSquareId).disabled = true;
         if (playerChoice === true) {
             if (selectedSquare.isFilled === false) {
                 wonKeys += 1;
@@ -284,6 +279,7 @@ function fillSquare() {
             document.getElementById(selectedSquareId).style.backgroundColor = 'rgb(58, 58, 58)';
         } else if (playerChoice === false) {
             document.getElementById(selectedSquareId).innerText = "X";
+            document.getElementById(selectedSquareId).style.backgroundColor = "rgb(222, 222, 222)";
         }
     } else {
         document.getElementById(selectedSquareId).style.backgroundColor = 'rgb(254, 156, 156)';
@@ -298,35 +294,51 @@ function winOrLose() {
         if (gridName === "Demo") {
             gridName = "";
         } else {
-            gridName = (gridNames[index - 1]);
-        }
+        gridName = (gridNames[index - 1]);
         win.style.visibility = 'visible';
         winText.innerHTML = `You Lost!`;
         nextLevelButton.innerHTML = "Try Again";
         resetGame();
+        docSquare.forEach(function (e) {
+            e.disabled = true;
+        });
+    }
     } else if (wonKeys === winningKeys) {
         for (key of currentGrid) {
             let id = key.space;
-            if(key.filled === true) {
+            if (key.filled === true) {
             } else if (key.filled === false) {
                 document.getElementById(id).style.backgroundColor = 'transparent';
                 document.getElementById(id).style.border = 'none';
                 document.getElementById(id).innerText = '';
             }
         }
+        title.innerHTML = '';
         hor.innerHTML = '';
         vert.innerHTML = '';
         win.style.visibility = 'visible';
+        winStyling();
+        docSquare.forEach(function (e) {
+            e.disabled = true;
+        });
+    }
+}
+
+function winStyling() {
+    if(gridName === "Ninja") {
+        win.innerHTML = `You completed the ${gridName} level! Congratulations you beat all the levels!`;
+        pageGrid.style.animation = "fadeOut 3s forwards";
+        setTimeout(() => {
+            document.querySelector("body").style.backgroundImage = 'url("https://gifdb.com/images/high/studio-ghibli-makuro-kuroski-cheering-0d48z8rdy14awbb8.gif")';
+            document.querySelector('body').innerHTML = '';
+        }, 2000);
+        nextLevelButton.remove();
+    } else {
         winText.innerHTML = `You completed the ${gridName} level!`;
-        if (gridName === "Ninja") {
-            win.innerHTML = `You completed the ${gridName} level! Congratulations you beat all the levels!`;
-            nextLevelButton.remove();
-        }
     }
 }
 
 function resetGame() {
-    console.log("reset");
     if (livesLeft < maxLives) {
         for (i = 0; i < (maxLives - livesLeft); i++) {
             let newLife = document.createElement('div');
@@ -341,6 +353,24 @@ function resetGame() {
     hor.innerHTML = '';
     vert.innerHTML = '';
 }
+
+function demoMode() {
+    document.querySelector('aside').style.visibility = 'visible';
+    win.style.visibility = 'hidden';
+    console.log("run demo");
+}
+
+// function checkMouse() {
+//     document.body.onmousedown = function() {
+//         mouseClicked = true;
+//         console.log("mousedown");
+//     }
+    
+//     document.body.onmouseup = function() {
+//         mouseClicked = false;
+//         console.log("mouseup");
+//     }
+// }
 
 nextLevelButton.addEventListener("click", function () {
     nextLevelButton.innerHTML = "Next Level";
@@ -368,10 +398,41 @@ backgrounds.forEach(function (e) {
     })
 })
 
-//SANDBOX
-//select difficulty - will create different boards
-//"start game" button
-//html add for winning game
-//html add for losing game
-//reset game function
+skipDemoButton.addEventListener("click", function () {
+    win.style.visibility = 'hidden';
+    gridName = gridNames[0];
+    resetGame();
+    nextLevel();
+})
 
+nextDemoButton.addEventListener("click", function() {
+    const demoText = document.querySelector('p');
+    const demoArrow = document.querySelector('#arrow');
+    demoText.innerHTML = tutorial[demoStep].text;
+    demoArrow.style.top = tutorial[demoStep].arrowtop;
+    demoArrow.style.left = tutorial[demoStep].arrowleft;
+    demoStep++;
+})
+
+
+
+
+
+
+
+// document.addEventListener("mousedown", function() {
+//     mouseClicked = true;
+//     console.log(mouseClicked);
+// })
+
+// document.addEventListener("mouseup", function() {
+//     mouseClicked = false;
+//     console.log(mouseClicked);
+// })
+
+//SANDBOX
+//disable buttons after selection or win/lose
+//add win animation
+//demo level
+
+//click/drag functionality
