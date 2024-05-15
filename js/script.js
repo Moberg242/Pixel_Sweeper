@@ -138,7 +138,7 @@ const sootSpriteHints = {
     row4: "3 1 3",
     row5: "7",
     row6: "9",
-    row7: "8",
+    row7: "7",
     row8: "1 1 1",
 };
 
