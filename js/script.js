@@ -1,17 +1,18 @@
 let gridSize;
 let selectedSquare;
 let selectedSquareId;
-const maxLives = 3;
+let previousLevel;
+let maxLives = 3;
 let livesLeft = 0;
 let currentGrid = '';
-const gridNames = ["Demo", "Stairs", "Pidgeon", "Ninja", "Ghibli"]
+const gridNames = ["Demo", "Heart", "Jiji the Cat", "Soot Sprite", "No Face", "Totoro", "Bonus Soot Sprite"]
 let gridName = '';
 let index = -1;
 let winningKeys;
 let wonKeys = 0;
 let demoStep = 0;
 let playerChoice = true;
-// let mouseClicked = true;
+let spaceClicked = false;
 
 
 let docSquare;
@@ -49,7 +50,12 @@ let tutorial = [
         arrowleft: '10%'
     },
     {
-        text: 'Notice the bottom row has a block of three squares to be filled in. Select your "fill" tool and fill in each square on the bottom row.',
+        text: 'You can use your "blank" tool to fill in the middle square so you dont lose track.',
+        arrowtop: '85%',
+        arrowleft: '20%'
+    },
+    {
+        text: 'Notice the bottom row has a block of three squares to be filled in. Select your "fill" tool and fill in each square on the bottom row. (You can hold down the space key to hover over multiple squares to fill them!).',
         arrowtop: '72%',
         arrowleft: '22%'
     },
@@ -58,11 +64,7 @@ let tutorial = [
         arrowtop: '25%',
         arrowleft: '32%'
     },
-    {
-        text: 'You can use your "blank" tool to fill in the middle square so you dont lose track.',
-        arrowtop: '85%',
-        arrowleft: '20%'
-    },
+
     {
         text: 'Notice the second column requires two squares to be filled. We already filled in one square! Choose your "fill" tool and color in the middle square to complete the block.',
         arrowtop: '25%',
@@ -72,7 +74,6 @@ let tutorial = [
 
 let demoGrid = [];
 const demoSquares = [0, 2, 4, 6, 7, 8];
-// const demoSquares = [0];
 const demoHints = {
     column0: "1 1",
     column1: "2",
@@ -82,66 +83,125 @@ const demoHints = {
     row2: "3"
 };
 
-let stairsGrid = [];
-// const stairsSquares = [3, 6, 7, 9, 10, 11, 12, 13, 14, 15];
-const stairsSquares = [0];
-const stairsHints = {
+let heartGrid = [];
+const heartSquares = [6, 8, 10, 12, 14, 16, 18, 22];
+const heartHints = {
     column0: "1",
-    column1: "2",
-    column2: "3",
-    column3: "4",
-    row0: "1",
-    row1: "2",
-    row2: "3",
-    row3: "4"
+    column1: "1 1",
+    column2: "1 1",
+    column3: "1 1",
+    column4: "1",
+    row0: "0",
+    row1: "1 1",
+    row2: "1 1 1",
+    row3: "1 1",
+    row4: "1"
 };
 
-let pidgeonGrid = [];
-// const pidgeonSquares = [1, 2, 3, 7, 8, 10, 15, 16, 17, 19, 20, 23, 24, 25, 26, 27, 30, 31, 32, 33, 39, 45, 46];
-const pidgeonSquares = [0];
-const pidgeonHints = {
-    column0: "1",
-    column1: "3",
-    column2: "1 3",
-    column3: "5 1",
-    column4: "4",
-    column5: "3",
-    column6: "2",
-    row0: "3",
-    row1: "2 1",
-    row2: "3 2",
-    row3: "5",
-    row4: "4",
-    row5: "1",
-    row6: "2"
-};
-
-let ninjaGrid = [];
-// const ninjaSquares = [
-// 3, 4, 5, 6, 8, 12, 17, 19, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 32, 34, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 59, 60, 69, 71, 74, 75, 78, 82, 87, 93, 94, 95, 96
-// ];
-const ninjaSquares = [0];
-const ninjaHints = {
+let jijiGrid = [];
+const jijiSquares = [1, 4, 8, 9, 11, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 24, 26, 27, 28, 29, 31, 33, 34, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47];
+const jijiHints = {
     column0: "4",
-    column1: "3 1",
-    column2: "4 1 1",
-    column3: "1 1 1 1",
-    column4: "1 3 1 1",
-    column5: "1 3 1 1",
-    column6: "1 1 1 1",
-    column7: "4 1",
-    column8: "1 3 1",
-    column9: "1 4",
-    row0: "4 1",
-    row1: "1 1 1",
+    column1: "7",
+    column2: "2 2",
+    column3: "5",
+    column4: "3 2",
+    column5: "6",
+    column6: "4",
+    row0: "1 1",
+    row1: "2 2",
+    row2: "7",
+    row3: "2 1 2",
+    row4: "2 1 2",
+    row5: "7",
+    row6: "5"
+};
+
+let sootSpriteGrid = [];
+const sootSpriteSquares = [
+    2, 5, 7, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 28, 29, 31, 33, 34, 35, 36, 37, 38, 40, 42, 43, 44, 46, 47, 48, 49, 50, 51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 65, 66, 67, 68, 69, 70, 71, 73, 76, 79
+];
+const sootSpriteHints = {
+    column0: "1 1 1",
+    column1: "5 1",
+    column2: "8",
+    column3: "2 3",
+    column4: "8",
+    column5: "3 3",
+    column6: "7",
+    column7: "9",
+    column8: "1 2 2",
+    row0: "1 1 1",
+    row1: "7",
     row2: "8",
-    row3: "3 2 3",
-    row4: "10",
+    row3: "2 1 3",
+    row4: "3 1 3",
+    row5: "7",
+    row6: "9",
+    row7: "8",
+    row8: "1 1 1",
+};
+
+let nofaceGrid = [];
+const nofaceSquares = [
+    4, 5, 6, 7, 8, 14, 15, 21, 22, 25, 26, 34, 35, 37, 47, 49, 51, 52, 56, 57, 59, 61, 71, 73, 75, 76, 80, 81, 83, 85, 87, 93, 95, 97, 107, 109, 110, 113, 114, 115, 118, 119, 121, 122, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143
+];
+const nofaceHints = {
+    column0: "1",
+    column1: "10",
+    column2: "2 3",
+    column3: "1 1 2 1",
+    column4: "1 1 1 1",
+    column5: "1 1 1",
+    column6: "1 1 1",
+    column7: "1 1 1",
+    column8: "1 1 1 1",
+    column9: "1 1 2 1",
+    column10: "2 3",
+    column11: "10",
+    row0: "5",
+    row1: "2 2",
+    row2: "2 2",
+    row3: "1 1",
+    row4: "1 2 2 1",
     row5: "1 1",
-    row6: "1 1",
-    row7: "1 2 1",
+    row6: "1 2 2 1",
+    row7: "1 1 1 1",
     row8: "1 1",
-    row9: "4"
+    row9: "2 3 2",
+    row10: "2 2",
+    row11: "12",
+};
+
+let totoroGrid = [];
+const totoroSquares = [
+    4, 9, 15, 16, 20, 21, 26, 28, 31, 33, 37, 40, 41, 42, 43, 45, 49, 58, 60, 64, 67, 70, 72, 75, 76, 78, 79, 82, 84, 87, 88, 90, 91, 94, 96, 105, 106, 108, 116, 117, 118, 119, 121, 127, 128, 131, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143
+];
+const totoroHints = {
+    column0: "5",
+    column1: "2 1",
+    column2: "1 1",
+    column3: "1 2 1",
+    column4: "4 3 1",
+    column5: "1 1",
+    column6: "1 2 1",
+    column7: "2 3 2",
+    column8: "1 3",
+    column9: "4 2 1",
+    column10: "6 1",
+    column11: "3",
+    row0: "1 1",
+    row1: "2 2",
+    row2: "1 1 1 1",
+    row3: "1 4 1",
+    row4: "1 1",
+    row5: "1 1 1 1",
+    row6: "1 2 2 1",
+    row7: "1 2 2 1",
+    row8: "1 2",
+    row9: "1 4",
+    row10: "1 2 1",
+    row11: "10",
 };
 
 let ghibliGrid = [];
@@ -195,9 +255,9 @@ function createGrid(gridArray) {
         newSquare.setAttribute("id", id);
         newSquare.setAttribute("class", "square");
         pageGrid.append(newSquare);
-        document.getElementById(id).style.width = (99 / gridSize) + "%";
-        document.getElementById(id).style.height = (99 / gridSize) + "%";
-        // document.getElementById(id).style.animation = "fadeSquare " + ((i + 5) * 50) + "ms";
+        document.getElementById(id).style.width = (100 / gridSize) + "%";
+        document.getElementById(id).style.height = (100 / gridSize) + "%";
+        document.getElementById(id).style.animation = "fadeSquare " + ((i + 1) * 30) + "ms";
     }
 }
 
@@ -227,30 +287,37 @@ function createGridImage(size, imageSquares, imageHints) {
 
 function nextLevel() {
     const title = document.querySelector('#title');
-    title.innerHTML = `Level ${index + 1}`;
+    title.innerHTML = `${gridNames[index + 1]} Level`;
     if (gridName === '') {
         title.innerHTML = "Tutorial";
-        currentGrid = demoGrid;
+        currentGrid = gridNames[0];
         index = 0;
         createGridImage(3, demoSquares, demoHints);
         demoMode();
     }
     else if (gridName === gridNames[0]) {
-        document.querySelector('aside').remove();
-        document.querySelector('#arrow').remove();
-        currentGrid = stairsGrid;
+        currentGrid = gridNames[1];
         index = 1;
-        createGridImage(4, stairsSquares, stairsHints);
+        createGridImage(5, heartSquares, heartHints);
     } else if (gridName === gridNames[1]) {
-        currentGrid = pidgeonGrid;
+        currentGrid = gridNames[2];
         index = 2;
-        createGridImage(7, pidgeonSquares, pidgeonHints);
+        createGridImage(7, jijiSquares, jijiHints);
     } else if (gridName === gridNames[2]) {
-        currentGrid = ninjaGrid;
+        currentGrid = gridNames[3];
         index = 3;
-        createGridImage(10, ninjaSquares, ninjaHints);
+        createGridImage(9, sootSpriteSquares, sootSpriteHints);
+    } else if (gridName === gridNames[3]) {
+        currentGrid = gridNames[4];
+        index = 4;
+        createGridImage(12, nofaceSquares, nofaceHints);
     } else if (gridName === gridNames[4]) {
-        currentGrid = ghibliGrid;
+        currentGrid = gridNames[5];
+        index = 5;
+        createGridImage(12, totoroSquares, totoroHints);
+    } else if (gridName === gridNames[5]) {
+        currentGrid = gridNames[6];
+        index = 6;
         createGridImage(15, ghibliSquares, ghibliHints);
     }
     gridName = gridNames[index];
@@ -258,15 +325,19 @@ function nextLevel() {
     docSquare.forEach(function (e) {
         let selection = e.getAttribute("id", [0]);
         e.addEventListener("click", function () {
-            // if(mouseClicked === true) {
+            selectedSquare = currentGrid[selection];
+            selectedSquareId = selection;
+            fillSquare();
+        })
+        e.addEventListener("mouseover", function () {
+            if (spaceClicked === true) {
                 selectedSquare = currentGrid[selection];
                 selectedSquareId = selection;
                 fillSquare();
-            // }
+            }
         })
     })
 }
-
 
 function fillSquare() {
     if (playerChoice === selectedSquare.filled) {
@@ -283,8 +354,10 @@ function fillSquare() {
         }
     } else {
         document.getElementById(selectedSquareId).style.backgroundColor = 'rgb(254, 156, 156)';
-        livesLeft -= 1;
-        lives.lastChild.remove();
+        if (gridName !== gridNames[0]) {
+            livesLeft -= 1;
+            lives.lastChild.remove();
+        }
     }
     winOrLose();
 }
@@ -294,22 +367,23 @@ function winOrLose() {
         if (gridName === "Demo") {
             gridName = "";
         } else {
-        gridName = (gridNames[index - 1]);
-        win.style.visibility = 'visible';
-        winText.innerHTML = `You Lost!`;
-        nextLevelButton.innerHTML = "Try Again";
-        resetGame();
-        docSquare.forEach(function (e) {
-            e.disabled = true;
-        });
-    }
+            index--;
+            gridName = (gridNames[index]);
+            win.style.visibility = 'visible';
+            winText.innerHTML = `You Lost!`;
+            nextLevelButton.innerHTML = "Try Again";
+            resetGame();
+            docSquare.forEach(function (e) {
+                e.disabled = true;
+            });
+        }
     } else if (wonKeys === winningKeys) {
         for (key of currentGrid) {
             let id = key.space;
             if (key.filled === true) {
             } else if (key.filled === false) {
-                document.getElementById(id).style.backgroundColor = 'transparent';
-                document.getElementById(id).style.border = 'none';
+                document.getElementById(id).style.backgroundColor = "transparent";
+                document.getElementById(id).style.border = "none";
                 document.getElementById(id).innerText = '';
             }
         }
@@ -321,18 +395,28 @@ function winOrLose() {
         docSquare.forEach(function (e) {
             e.disabled = true;
         });
+        if (gridName === gridNames[0]) {
+            document.querySelector('aside').remove();
+            document.querySelector('#arrow').remove();
+        }
     }
 }
 
 function winStyling() {
-    if(gridName === "Ninja") {
+    if (gridName === "Bonus Soot Sprite") {
         win.innerHTML = `You completed the ${gridName} level! Congratulations you beat all the levels!`;
-        pageGrid.style.animation = "fadeOut 3s forwards";
-        setTimeout(() => {
-            document.querySelector("body").style.backgroundImage = 'url("https://gifdb.com/images/high/studio-ghibli-makuro-kuroski-cheering-0d48z8rdy14awbb8.gif")';
-            document.querySelector('body').innerHTML = '';
-        }, 2000);
+        pageGrid.style.animation = "fadeOut 4s";
         nextLevelButton.remove();
+        setTimeout(() => {
+            pageGrid.style =
+                "background-image: url('https://gifdb.com/images/high/studio-ghibli-makuro-kuroski-cheering-0d48z8rdy14awbb8.gif'); opacity: 90%; bottom: 25%;";
+            for (key of currentGrid) {
+                let id = key.space;
+                document.getElementById(id).innerText = '';
+                document.getElementById(id).style =
+                    "background-color: transparent; border: none;";
+            }
+        }, 3800);
     } else {
         winText.innerHTML = `You completed the ${gridName} level!`;
     }
@@ -357,20 +441,7 @@ function resetGame() {
 function demoMode() {
     document.querySelector('aside').style.visibility = 'visible';
     win.style.visibility = 'hidden';
-    console.log("run demo");
 }
-
-// function checkMouse() {
-//     document.body.onmousedown = function() {
-//         mouseClicked = true;
-//         console.log("mousedown");
-//     }
-    
-//     document.body.onmouseup = function() {
-//         mouseClicked = false;
-//         console.log("mouseup");
-//     }
-// }
 
 nextLevelButton.addEventListener("click", function () {
     nextLevelButton.innerHTML = "Next Level";
@@ -403,9 +474,11 @@ skipDemoButton.addEventListener("click", function () {
     gridName = gridNames[0];
     resetGame();
     nextLevel();
+    document.querySelector('aside').remove();
+    document.querySelector('#arrow').remove();
 })
 
-nextDemoButton.addEventListener("click", function() {
+nextDemoButton.addEventListener("click", function () {
     const demoText = document.querySelector('p');
     const demoArrow = document.querySelector('#arrow');
     demoText.innerHTML = tutorial[demoStep].text;
@@ -414,25 +487,14 @@ nextDemoButton.addEventListener("click", function() {
     demoStep++;
 })
 
+document.addEventListener("keydown", function (e) {
+    if (e.code === "Space") {
+        spaceClicked = true;
+    }
+})
 
-
-
-
-
-
-// document.addEventListener("mousedown", function() {
-//     mouseClicked = true;
-//     console.log(mouseClicked);
-// })
-
-// document.addEventListener("mouseup", function() {
-//     mouseClicked = false;
-//     console.log(mouseClicked);
-// })
-
-//SANDBOX
-//disable buttons after selection or win/lose
-//add win animation
-//demo level
-
-//click/drag functionality
+document.addEventListener("keyup", function (e) {
+    if (e.code === "Space") {
+        spaceClicked = false;
+    }
+})

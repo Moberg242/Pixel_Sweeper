@@ -1,4 +1,4 @@
-# Pixel Sweeper
+# Ghibli Grams
 
 ## Overview
 This is a web-based game of nonogram that's a cross between sudoku and minesweeper! As noted in wikipedia, this game is originally based on a design created by Non Ishida in 1987 that inspired a puzzle game to create a picture by filling out squares in a grid. Use the hints on the side of the board to create your image!
@@ -20,8 +20,9 @@ Pixel Sweeper is created with HTML, CSS, and Javascript to allow interactive gam
 
 
 ## Icebox Features:
-* This game will soon have a "demo" feature to show you step by step how to play the game
-* This game will soon have the ability to choose your level and complete multiple levels!
+* Hints available to help solve difficult puzzles
+* Refine click and drag feature
+* Add thick border every five lines to make the board easier to read
 
 
 
