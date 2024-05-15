@@ -5,7 +5,7 @@ This is a web-based game of nonogram that's a cross between sudoku and minesweep
 
 
 ## Go to the game here!
-http://ghibli-grams.com/
+https://moberg242.github.io/ghibli-grams/
 The rules are simple: Use the hints on the top and bottom of the grid to determine which squares should be filled out. Select "fill" or "blank" and then click on squares to fill out the grid! Don't make too many mistakes or you lose!
 
 ## Gameplay
